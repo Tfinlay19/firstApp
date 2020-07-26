@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="eng">
+    <head>
+        <title>Document</title>
+    </head>
+    <body>
+        <h1>Data Selfie App</h1>
+        <button onclick="backToMain()">Go back to info page</button>
+        <script>
+
+            async function getData() //async functions are functions which use await which is basically like await the response from the function which it is paired with before you continue the script
+            {
+                let response = await fetch("/api");
+                let data = await response.json(); //try removing this await to see what happens
+
+                for(let i = 0; i < data.length; i++)
+                {
+                    let output = document.createElement("div");
+                    let image = document.createElement("img");
+
+                    let lat = data[i].lat;
+                    let lon = data[i].lon;
+                    let name = data[i].name;
+                    let time = new Date(data[i].timestamp).toLocaleString();
+
+                    image.src = data[i].image64;
+
+                    output.textContent = `${lat} ${lon} ${name} ${time}`
+                    document.body.append(output);
+                    document.body.append(image);
+                }
+
+                console.log(data);
+            }
+            getData();
+            function backToMain()
+            {
+                window.location = "index.html";
+            }
+        </script>
+    </body>
+</html>
